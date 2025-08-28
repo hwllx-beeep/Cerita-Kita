@@ -42,6 +42,7 @@ const NotesContent = ({
     }
   };
 
+  // container untuk semua section
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -52,6 +53,7 @@ const NotesContent = ({
     },
   };
 
+  // animasi per section (tanpa staggerChildren)
   const sectionVariants = {
     hidden: {
       opacity: 0,
@@ -80,9 +82,9 @@ const NotesContent = ({
           key={sectionKey}
           id={sectionKey}
           variants={sectionVariants}
-          transition={{ staggerChildren: 0.1 }} // ✅ fix disini
           className="scroll-mt-8 lg:scroll-mt-16"
         >
+          {/* HEADER */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8 gap-4">
             <motion.h1
               className="text-2xl sm:text-3xl font-bold text-white"
@@ -122,6 +124,7 @@ const NotesContent = ({
 
           <div className="border-b border-gray-600 mb-6"></div>
 
+          {/* ADD ITEM */}
           {showAddItem[sectionKey] && (
             <motion.div
               className="mb-6 p-4 bg-gray-800/50 rounded-lg border border-gray-700"
@@ -168,6 +171,7 @@ const NotesContent = ({
             </motion.div>
           )}
 
+          {/* LIST ITEM */}
           <div className="space-y-3 sm:space-y-4">
             {section.items.map((item, index) => (
               <CheckboxItem
