@@ -6,21 +6,30 @@ import { Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 interface NotesContentProps {
-  data: Record<string, {
-    title: string;
-    items: Array<{
-      id: string;
-      text: string;
-      checked: boolean;
-    }>;
-  }>;
+  data: Record<
+    string,
+    {
+      title: string;
+      items: Array<{
+        id: string;
+        text: string;
+        checked: boolean;
+      }>;
+    }
+  >;
   onCheckboxChange: (sectionKey: string, itemId: string) => void;
   onAddItem: (sectionKey: string, text: string) => void;
   onDeleteItem: (sectionKey: string, itemId: string) => void;
   onDeleteSection: (sectionKey: string) => void;
 }
 
-const NotesContent = ({ data, onCheckboxChange, onAddItem, onDeleteItem, onDeleteSection }: NotesContentProps) => {
+const NotesContent = ({
+  data,
+  onCheckboxChange,
+  onAddItem,
+  onDeleteItem,
+  onDeleteSection,
+}: NotesContentProps) => {
   const [newItemTexts, setNewItemTexts] = useState<Record<string, string>>({});
   const [showAddItem, setShowAddItem] = useState<Record<string, boolean>>({});
 
@@ -28,8 +37,8 @@ const NotesContent = ({ data, onCheckboxChange, onAddItem, onDeleteItem, onDelet
     const text = newItemTexts[sectionKey]?.trim();
     if (text) {
       onAddItem(sectionKey, text);
-      setNewItemTexts(prev => ({ ...prev, [sectionKey]: '' }));
-      setShowAddItem(prev => ({ ...prev, [sectionKey]: false }));
+      setNewItemTexts((prev) => ({ ...prev, [sectionKey]: "" }));
+      setShowAddItem((prev) => ({ ...prev, [sectionKey]: false }));
     }
   };
 
@@ -38,26 +47,25 @@ const NotesContent = ({ data, onCheckboxChange, onAddItem, onDeleteItem, onDelet
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2
-      }
-    }
+        staggerChildren: 0.2,
+      },
+    },
   };
 
   const sectionVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 50
+    hidden: {
+      opacity: 0,
+      y: 50,
     },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 300,
         damping: 30,
-        staggerChildren: 0.1
-      }
-    }
+      },
+    },
   };
 
   return (
@@ -72,20 +80,26 @@ const NotesContent = ({ data, onCheckboxChange, onAddItem, onDeleteItem, onDelet
           key={sectionKey}
           id={sectionKey}
           variants={sectionVariants}
+          transition={{ staggerChildren: 0.1 }} // ✅ fix disini
           className="scroll-mt-8 lg:scroll-mt-16"
         >
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8 gap-4">
-            <motion.h1 
+            <motion.h1
               className="text-2xl sm:text-3xl font-bold text-white"
               whileHover={{ scale: 1.02 }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
               {section.title}
             </motion.h1>
-            
+
             <div className="flex gap-2">
               <motion.button
-                onClick={() => setShowAddItem(prev => ({ ...prev, [sectionKey]: !prev[sectionKey] }))}
+                onClick={() =>
+                  setShowAddItem((prev) => ({
+                    ...prev,
+                    [sectionKey]: !prev[sectionKey],
+                  }))
+                }
                 className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg flex items-center gap-2 transition-colors text-sm"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -93,7 +107,7 @@ const NotesContent = ({ data, onCheckboxChange, onAddItem, onDeleteItem, onDelet
                 <Plus className="w-4 h-4" />
                 <span className="hidden sm:inline">Add Item</span>
               </motion.button>
-              
+
               <motion.button
                 onClick={() => onDeleteSection(sectionKey)}
                 className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg flex items-center gap-2 transition-colors text-sm"
@@ -107,7 +121,7 @@ const NotesContent = ({ data, onCheckboxChange, onAddItem, onDeleteItem, onDelet
           </div>
 
           <div className="border-b border-gray-600 mb-6"></div>
-          
+
           {showAddItem[sectionKey] && (
             <motion.div
               className="mb-6 p-4 bg-gray-800/50 rounded-lg border border-gray-700"
@@ -118,11 +132,18 @@ const NotesContent = ({ data, onCheckboxChange, onAddItem, onDeleteItem, onDelet
               <div className="flex flex-col sm:flex-row gap-2">
                 <input
                   type="text"
-                  value={newItemTexts[sectionKey] || ''}
-                  onChange={(e) => setNewItemTexts(prev => ({ ...prev, [sectionKey]: e.target.value }))}
+                  value={newItemTexts[sectionKey] || ""}
+                  onChange={(e) =>
+                    setNewItemTexts((prev) => ({
+                      ...prev,
+                      [sectionKey]: e.target.value,
+                    }))
+                  }
                   placeholder="Enter new item..."
                   className="flex-1 bg-gray-700 text-white px-3 py-2 rounded border border-gray-600 focus:border-blue-500 focus:outline-none"
-                  onKeyPress={(e) => e.key === 'Enter' && handleAddItem(sectionKey)}
+                  onKeyPress={(e) =>
+                    e.key === "Enter" && handleAddItem(sectionKey)
+                  }
                 />
                 <div className="flex gap-2">
                   <button
@@ -132,7 +153,12 @@ const NotesContent = ({ data, onCheckboxChange, onAddItem, onDeleteItem, onDelet
                     Add
                   </button>
                   <button
-                    onClick={() => setShowAddItem(prev => ({ ...prev, [sectionKey]: false }))}
+                    onClick={() =>
+                      setShowAddItem((prev) => ({
+                        ...prev,
+                        [sectionKey]: false,
+                      }))
+                    }
                     className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded transition-colors"
                   >
                     Cancel
@@ -141,7 +167,7 @@ const NotesContent = ({ data, onCheckboxChange, onAddItem, onDeleteItem, onDelet
               </div>
             </motion.div>
           )}
-          
+
           <div className="space-y-3 sm:space-y-4">
             {section.items.map((item, index) => (
               <CheckboxItem
@@ -152,7 +178,7 @@ const NotesContent = ({ data, onCheckboxChange, onAddItem, onDeleteItem, onDelet
                 onDelete={() => onDeleteItem(sectionKey, item.id)}
               />
             ))}
-            
+
             {section.items.length === 0 && (
               <motion.p
                 className="text-gray-500 italic text-center py-8"
