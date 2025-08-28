@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Check, Trash2 } from "lucide-react";
 
 interface CheckboxItemProps {
@@ -15,7 +15,7 @@ interface CheckboxItemProps {
 }
 
 const CheckboxItem = ({ item, index, onChange, onDelete }: CheckboxItemProps) => {
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { 
       opacity: 0, 
       x: -50,
@@ -34,7 +34,7 @@ const CheckboxItem = ({ item, index, onChange, onDelete }: CheckboxItemProps) =>
     }
   };
 
-  const checkboxVariants = {
+  const checkboxVariants: Variants = {
     checked: {
       backgroundColor: "#3B82F6",
       borderColor: "#3B82F6",
@@ -57,7 +57,7 @@ const CheckboxItem = ({ item, index, onChange, onDelete }: CheckboxItemProps) =>
     }
   };
 
-  const textVariants = {
+  const textVariants: Variants = {
     checked: {
       color: "#9CA3AF",
       textDecoration: "line-through",
@@ -79,6 +79,7 @@ const CheckboxItem = ({ item, index, onChange, onDelete }: CheckboxItemProps) =>
         transition: { type: "spring", stiffness: 400, damping: 30 }
       }}
     >
+      {/* Checkbox */}
       <motion.div
         onClick={onChange}
         className="relative w-5 h-5 border-2 rounded flex items-center justify-center"
@@ -103,6 +104,7 @@ const CheckboxItem = ({ item, index, onChange, onDelete }: CheckboxItemProps) =>
         </motion.div>
       </motion.div>
       
+      {/* Text */}
       <motion.span
         onClick={onChange}
         variants={textVariants}
@@ -112,6 +114,7 @@ const CheckboxItem = ({ item, index, onChange, onDelete }: CheckboxItemProps) =>
         {item.text}
       </motion.span>
       
+      {/* Delete Button */}
       <motion.button
         onClick={(e) => {
           e.stopPropagation();
