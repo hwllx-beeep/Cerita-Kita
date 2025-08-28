@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { ChevronDown, ChevronUp, Menu, X, Trash2 } from "lucide-react";
 import { useState } from "react";
 
@@ -19,48 +19,26 @@ const Sidebar = ({ sections, onDeleteSection }: SidebarProps) => {
   const scrollToSection = (sectionKey: string) => {
     const element = document.getElementById(sectionKey);
     if (element) {
-      element.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
       });
-      setIsMobileOpen(false); // Close mobile menu after navigation
+      setIsMobileOpen(false);
     }
   };
 
-  const sidebarVariants = {
-    expanded: {
-      width: "280px",
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 30
-      }
-    },
-    collapsed: {
-      width: "60px",
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 30
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: {
-      opacity: 0,
-      x: -20
-    },
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, x: -20 },
     visible: (i: number) => ({
       opacity: 1,
       x: 0,
       transition: {
         delay: i * 0.1,
-        type: "spring",
+        type: "spring" as const,
         stiffness: 300,
-        damping: 30
-      }
-    })
+        damping: 30,
+      },
+    }),
   };
 
   return (
@@ -93,11 +71,11 @@ const Sidebar = ({ sections, onDeleteSection }: SidebarProps) => {
           lg:relative lg:translate-x-0
           fixed inset-y-0 left-0 z-40
           transform transition-transform duration-300 ease-in-out
-          ${isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+          ${isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
         `}
-        variants={sidebarVariants}
-        animate={isExpanded ? "expanded" : "collapsed"}
-        initial="expanded"
+        animate={{ width: isExpanded ? "280px" : "60px" }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        initial={{ width: "280px" }}
       >
         <div className="p-4 border-b border-gray-700">
           <motion.button
@@ -107,11 +85,7 @@ const Sidebar = ({ sections, onDeleteSection }: SidebarProps) => {
             whileTap={{ scale: 0.95 }}
           >
             {isExpanded && <span className="font-semibold">Navigation</span>}
-            {isExpanded ? (
-              <ChevronDown className="w-5 h-5" />
-            ) : (
-              <ChevronUp className="w-5 h-5" />
-            )}
+            {isExpanded ? <ChevronDown className="w-5 h-5" /> : <ChevronUp className="w-5 h-5" />}
           </motion.button>
         </div>
 
@@ -128,9 +102,9 @@ const Sidebar = ({ sections, onDeleteSection }: SidebarProps) => {
               <motion.button
                 onClick={() => scrollToSection(section.key)}
                 className="w-full text-left p-3 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700/50 transition-all duration-200"
-                whileHover={{ 
+                whileHover={{
                   scale: 1.02,
-                  backgroundColor: "rgba(75, 85, 99, 0.3)"
+                  backgroundColor: "rgba(75, 85, 99, 0.3)",
                 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -138,13 +112,11 @@ const Sidebar = ({ sections, onDeleteSection }: SidebarProps) => {
                   <span className="block truncate pr-8">{section.title}</span>
                 ) : (
                   <div className="w-6 h-6 bg-gray-600 rounded flex items-center justify-center">
-                    <span className="text-xs font-bold">
-                      {section.title.charAt(0)}
-                    </span>
+                    <span className="text-xs font-bold">{section.title.charAt(0)}</span>
                   </div>
                 )}
               </motion.button>
-              
+
               {isExpanded && (
                 <motion.button
                   onClick={(e) => {
@@ -172,7 +144,7 @@ const Sidebar = ({ sections, onDeleteSection }: SidebarProps) => {
             <motion.button
               className="w-full text-left p-2 text-sm text-gray-500 hover:text-gray-300 transition-colors"
               onClick={() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.scrollTo({ top: 0, behavior: "smooth" });
                 setIsMobileOpen(false);
               }}
               whileHover={{ x: 5 }}
@@ -182,7 +154,7 @@ const Sidebar = ({ sections, onDeleteSection }: SidebarProps) => {
             <motion.button
               className="w-full text-left p-2 text-sm text-gray-500 hover:text-gray-300 transition-colors"
               onClick={() => {
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
                 setIsMobileOpen(false);
               }}
               whileHover={{ x: 5 }}
